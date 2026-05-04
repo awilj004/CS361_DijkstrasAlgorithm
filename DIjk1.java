@@ -4,14 +4,38 @@ public class DIjk1 {
     int[][] matrixGraph;
 
     private int[] dijkstra (List<List<Edge>> g, int s){
-        int[] distList = new int[g.size()];
-        boolean[] visited = new boolean[g.size()];
-        for(int i = 0; i<distList.length-1; i++){
+        int n = g.size();
+        int[] distList = new int[n];
+        boolean[] visited = new boolean[n];
+        for(int i = 0; i<distList.length; i++){
             distList[i] = Integer.MAX_VALUE;
         }
         distList[s] = 0;
-        List<Edge> curr = g.get(s);
-        return null;
+        int curr = s;
+        for(int i = 0; i<n; i++){
+            visited[curr] = true;
+            int dist = distList[curr];
+            for(int j = 0; j<g.get(curr).size(); j++){
+                Edge e = g.get(curr).get(j);
+                int newDist = dist + e.weight;
+                if(newDist < distList[e.next]){
+                    distList[e.next] = newDist;
+                }
+            }
+            int shortestPath = -1;
+            for(int j = 0; j<n; j++){
+                if(!visited[j]){
+                    if(shortestPath == -1 || distList[j] < distList[shortestPath]){
+                        shortestPath = j;
+                    }
+                }
+            }
+            if(shortestPath == -1){
+                break;
+            }
+            curr = shortestPath;
+        }
+        return distList;
     }
 
     private int[] dijkstra (int[][] g, int s){
