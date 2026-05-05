@@ -1,16 +1,8 @@
+package src;
 
 import java.util.*;
 
 public class Graphs {
-    static class ABCNode {
-        char vertex;
-        int weight;
-
-        ABCNode(char v, int w) {
-            this.vertex = v;
-            this.weight = w;
-        }
-    }
 
     static class numNode {
         int vertex;
@@ -28,50 +20,6 @@ public class Graphs {
         int getWeight() {
             return weight;
         }
-    }
-
-    //int sparse = V;
-    //int medium = (int)(V * Math.sqrt(V));
-    //int dense = V * (V - 1) / 2;
-
-    Map<Character, ArrayList<ABCNode>> sparseABCGraph = new HashMap<>();
-    Map<Character, ArrayList<ABCNode>> denseABCGraph = new HashMap<>();
-
-    static void addABCEdge(Map<Character, ArrayList<ABCNode>> graph, char u, char v, int w) {
-        graph.putIfAbsent(u, new ArrayList<>());
-        graph.putIfAbsent(v, new ArrayList<>());
-
-        graph.get(u).add(new ABCNode(v, w));
-        graph.get(v).add(new ABCNode(u, w)); //undirected graph
-    }
-    static Map<Character, ArrayList<ABCNode>> ABCSparseGraph() {
-        Map<Character, ArrayList<ABCNode>> graph = new HashMap<>();
-
-        addABCEdge(graph, 'A', 'B', 4);
-        addABCEdge(graph, 'A', 'C', 2);
-        addABCEdge(graph, 'B', 'D', 5);
-        addABCEdge(graph, 'C', 'D', 1);
-        addABCEdge(graph, 'D', 'E', 3);
-        addABCEdge(graph, 'E', 'F', 2);
-
-        return graph;
-
-    }
-    static Map<Character, ArrayList<ABCNode>> ABCDenseGraph() {
-        Map<Character, ArrayList<ABCNode>> graph = new HashMap<>();
-
-        addABCEdge(graph, 'A', 'B', 2);
-        addABCEdge(graph, 'A', 'C', 5);
-        addABCEdge(graph, 'A', 'D', 1);
-        addABCEdge(graph, 'A', 'E', 4);
-        addABCEdge(graph, 'B', 'C', 3);
-        addABCEdge(graph, 'B', 'D', 2);
-        addABCEdge(graph, 'B', 'E', 6);
-        addABCEdge(graph, 'C', 'D', 3);
-        addABCEdge(graph, 'C', 'E', 1);
-        addABCEdge(graph, 'D', 'E', 2);
-
-        return graph;
     }
 
     public static ArrayList<ArrayList<numNode>> sparseNumGraph(int v) {
@@ -162,34 +110,6 @@ public class Graphs {
         return graph;
     }
 
-
-
-//    static Map<Integer, ArrayList<numNode>> genRandDenseGraph(int V, int E) {
-//
-//    Map<Integer, ArrayList<numNode>> graph = new HashMap<>();
-//    Random rand = new Random();
-//
-//    for (int i = 0; i < V; i++) {
-//        graph.put(i, new ArrayList<>());
-//    }
-//
-//    int edgesAdded = 0;
-//    while (edgesAdded < E) {
-//        int u = rand.nextInt(V);
-//        int v = rand.nextInt(V);
-//
-//        if (u == v) continue; // no self loops
-//
-//        int weight = rand.nextInt(10) + 1;
-//
-//        graph.get(u).add(new numNode(v, weight));
-//        graph.get(v).add(new numNode(u, weight)); // undirected
-//
-//        edgesAdded++;
-//    }
-//
-//    return graph;
-//}
 private static ArrayList<ArrayList<numNode>> matrixToList(int[][] m){
     int inf = Integer.MAX_VALUE;
     ArrayList<ArrayList<numNode>> returnList = new ArrayList<>();
@@ -245,6 +165,9 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
    dist[source] = 0;
    boolean[] vistited = new boolean[v];
 
+   int[] parent = new int[v];
+   Arrays.fill(parent, -1);
+
     PriorityQueue<numNode> priorityQueue = new PriorityQueue<>(
             (v1,v2) -> Integer.compare(v1.getWeight(), v2.getWeight()));
     priorityQueue.add(new numNode(source,0));
@@ -266,23 +189,78 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
            {
                dist[u2] = n.getWeight() + dist[u];
                priorityQueue.add(new numNode(n.getVertex(),dist[u2]));
+               parent[u2] = u;
            }
        }
    }
+
+   System.out.println("Parent Array (first 10 or less vertices): " + Arrays.toString(Arrays.copyOf(parent,10)));
    return dist;
 }
+
+    static ArrayList<ArrayList<numNode>> genDenseGraph(int V) {
+        Random rand = new Random();
+        ArrayList<ArrayList<numNode>> graph = new ArrayList<>();
+
+        for (int i = 0; i < V; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < V; i++) {
+            for (int j = i + 1; j < V; j++) {
+                int weight = rand.nextInt(100) + 1;
+
+                graph.get(i).add(new numNode(j, weight));
+                graph.get(j).add(new numNode(i, weight));
+            }
+        }
+
+        return graph;
+    }
+
+
+    static ArrayList<ArrayList<numNode>> genSparseGraph(int V) {
+        Random rand = new Random();
+        ArrayList<ArrayList<numNode>> graph = new ArrayList<>();
+
+        for (int i = 0; i < V; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int i = 0; i < V - 1; i++) {
+            int weight = rand.nextInt(100) + 1;
+
+            graph.get(i).add(new numNode(i + 1, weight));
+            graph.get(i + 1).add(new numNode(i, weight));
+        }
+        for (int i = 0; i < V; i++) {
+            int u = rand.nextInt(V);
+            int v = rand.nextInt(V);
+
+            if (u != v) {
+                int weight = rand.nextInt(100) + 1;
+
+                graph.get(u).add(new numNode(v, weight));
+                graph.get(v).add(new numNode(u, weight));
+            }
+        }
+
+        return graph;
+    }
+
 
     public static void main(String[] args) {
     Runtime runtime =Runtime.getRuntime();
         ArrayList<ArrayList<numNode>> sparseGraph1 = matrixToList(sparseGraph1M);
-        int v1 = 18;
+        int v1 = sparseGraph1.size();
         ArrayList<ArrayList<numNode>> sparseGraph2 = matrixToList(sparseGraph2M);
-        int v2 = 21;
+        int v2 = sparseGraph2.size();
 
         ArrayList<ArrayList<numNode>> denseGraph1 = matrixToList(denseGraph1M);
-        int v3 = 25;
+        int v3 = denseGraph1.size();
         ArrayList<ArrayList<numNode>> denseGraph2 = matrixToList(denseGraph2M);
-        int v4 = 36;
+        int v4 = denseGraph2.size();
+
+        System.out.println("****Provided Graphs****\n");
 
         System.out.println("Benchmark One: Sparse Graph 1");
         long start = System.nanoTime();
@@ -319,5 +297,31 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
         System.out.println("Total Time: " + duration+ " ns");
         System.out.println("Used Memory: " + usedMem+ " bytes");
         System.out.println("Result: " + Arrays.toString(result4) + "\n");
+
+        System.out.println("****Testing Rand Generated Graphs*****");
+
+        int vSparse = 1000;
+        int vDense = 200;
+
+        ArrayList<ArrayList<numNode>> randSparse = genSparseGraph(vSparse);
+        ArrayList<ArrayList<numNode>> randDense = genDenseGraph(vDense);
+
+        System.out.println("BenchMark 5: Randomly Generated Sparse Graph with 1000 Vertices");
+        start = System.nanoTime();
+        int [] result5 = PriorityQueueDijkstra(randSparse.size(), randSparse, 0);
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        duration = System.nanoTime() -start;
+        System.out.println("Total Time: " + duration+ " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result (first 10 vertices) : " + Arrays.toString(Arrays.copyOf(result5,10)) + "\n");
+
+        System.out.println("BenchMark 6: Randomly Generated Dense Graph with 200 Vertices");
+        start = System.nanoTime();
+        int [] result6 = PriorityQueueDijkstra(randDense.size(), randDense, 0);
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        duration = System.nanoTime() -start;
+        System.out.println("Total Time: " + duration+ " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result (first 10 vertices): " + Arrays.toString(Arrays.copyOf(result6,10)) + "\n");
     }
 }
