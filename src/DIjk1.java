@@ -1,5 +1,10 @@
 import java.util.*;
 public class DIjk1 {
+    //TODO make and test with large graphs like V-1000 sparse graph and V=200 dense graph.
+    //TODO add your findings to the conclusion and the repor tthat ive been making, just read the proj specs
+    //for what you need todo and what ive already added, since ive labled everything by number accordin tod the proj specs
+    //make sure to take ss and make a table of your implementations with lables and space and time complexities, i made it pretty clear in the runGraphs() or whatever
+
     private static void buildGraphs(){
         int inf = Integer.MAX_VALUE;
         int[][] sparseGraph1M = {
