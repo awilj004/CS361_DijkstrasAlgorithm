@@ -7,125 +7,35 @@ public class Graphs {
     static class numNode {
         int vertex;
         int weight;
-
         numNode(int v, int w) {
             this.vertex = v;
             this.weight = w;
         }
-
         int getVertex() {
             return vertex;
         }
-
         int getWeight() {
             return weight;
         }
     }
 
-    public static ArrayList<ArrayList<numNode>> sparseNumGraph(int v) {
-
-    ArrayList<ArrayList<numNode>> graph = new ArrayList<>();
-    for(int i = 0 ; i < v ; i++)
-    {
-        graph.add(new ArrayList<>());
-    }
-
-    graph.get(0).add(new numNode(1,3));
-    graph.get(1).add((new numNode(0,3)));
-
-    graph.get(0).add(new numNode(2,6));
-    graph.get(2).add(new numNode(0,6));
-
-    graph.get(1).add(new numNode(3,2));
-    graph.get(3).add(new numNode(1,2));
-
-    graph.get(2).add(new numNode(4,4));
-    graph.get(4).add(new numNode(2,4));
-
-    graph.get(3).add(new numNode(5,7));
-    graph.get(5).add(new numNode(3,7));
-
-    graph.get(4).add(new numNode(6,1));
-    graph.get(6).add(new numNode(4,1));
-
-    graph.get(1).add(new numNode(4,5));
-    graph.get(4).add(new numNode(1,5));
-
-    return graph;
-    }
-
-    public static ArrayList<ArrayList<numNode>> denseNumGraph(int v)
-    {
-        ArrayList<ArrayList<numNode>> graph = new ArrayList<>();
-        for(int i = 0; i < v; i++)
-        {
-            graph.add(new ArrayList<>());
-        }
-
-        graph.get(0).add(new numNode(1, 3));
-        graph.get(1).add(new numNode(0, 3));
-
-        graph.get(0).add(new numNode(2, 2));
-        graph.get(2).add(new numNode(0, 2));
-
-        graph.get(0).add(new numNode(3, 6));
-        graph.get(3).add(new numNode(0, 6));
-
-        graph.get(0).add(new numNode(4, 5));
-        graph.get(4).add(new numNode(0, 5));
-
-        graph.get(0).add(new numNode(5, 4));
-        graph.get(5).add(new numNode(0, 4));
-
-        graph.get(1).add(new numNode(2, 1));
-        graph.get(2).add(new numNode(1, 1));
-
-        graph.get(1).add(new numNode(3, 2));
-        graph.get(3).add(new numNode(1, 2));
-
-        graph.get(1).add(new numNode(4, 4));
-        graph.get(4).add(new numNode(1, 4));
-
-        graph.get(1).add(new numNode(5, 7));
-        graph.get(5).add(new numNode(1, 7));
-
-        graph.get(2).add(new numNode(3, 3));
-        graph.get(3).add(new numNode(2, 3));
-
-        graph.get(2).add(new numNode(4, 6));
-        graph.get(4).add(new numNode(2, 6));
-
-        graph.get(2).add(new numNode(5, 5));
-        graph.get(5).add(new numNode(2, 5));
-
-        graph.get(3).add(new numNode(4, 2));
-        graph.get(4).add(new numNode(3, 2));
-
-        graph.get(3).add(new numNode(5, 4));
-        graph.get(5).add(new numNode(3, 4));
-
-        graph.get(4).add(new numNode(5, 1));
-        graph.get(5).add(new numNode(4, 1));
-
-        return graph;
-    }
-
 private static ArrayList<ArrayList<numNode>> matrixToList(int[][] m){
     int inf = Integer.MAX_VALUE;
     ArrayList<ArrayList<numNode>> returnList = new ArrayList<>();
-    for(int i = 0; i<m.length; i++){
-        ArrayList<numNode> innerList = new ArrayList<>();
-        for(int j = 0; j<m.length; j++){
-            if(m[i][j] != inf){
-                numNode e = new numNode(j,m[i][j]);
-                innerList.add(e);
-            }
-        }
-        returnList.add(innerList);
+  for (int[] ints : m) {
+    ArrayList<numNode> innerList = new ArrayList<>();
+    for (int j = 0; j < m.length; j++) {
+      if (ints[j] != inf) {
+        numNode e = new numNode(j, ints[j]);
+        innerList.add(e);
+      }
     }
+    returnList.add(innerList);
+  }
     return returnList;
 }
-    static int inf = Integer.MAX_VALUE;
+
+static int inf = Integer.MAX_VALUE;
     static int[][] sparseGraph1M = {
             {0,4,2,inf,inf,inf},
             {4,0,inf,5,inf,inf},
@@ -158,6 +68,7 @@ private static ArrayList<ArrayList<numNode>> matrixToList(int[][] m){
             {5,4,6,2,0,1},
             {4,7,5,4,1,0}
     };
+
 static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, int source)
 {
    int dist[] = new int[v];
@@ -193,7 +104,6 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
            }
        }
    }
-
    System.out.println("Parent Array (first 10 or less vertices): " + Arrays.toString(Arrays.copyOf(parent,10)));
    return dist;
 }
@@ -218,7 +128,6 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
         return graph;
     }
 
-
     static ArrayList<ArrayList<numNode>> genSparseGraph(int V) {
         Random rand = new Random();
         ArrayList<ArrayList<numNode>> graph = new ArrayList<>();
@@ -238,15 +147,12 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
 
             if (u != v) {
                 int weight = rand.nextInt(100) + 1;
-
                 graph.get(u).add(new numNode(v, weight));
                 graph.get(v).add(new numNode(u, weight));
             }
         }
-
         return graph;
     }
-
 
     public static void main(String[] args) {
     Runtime runtime =Runtime.getRuntime();
