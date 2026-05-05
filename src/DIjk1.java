@@ -133,14 +133,89 @@ public class DIjk1 {
     }
 
     private static void runTests(List<List<Edge>> sg1l,List<List<Edge>> sg2l, List<List<Edge>> dg1l, List<List<Edge>> dg2l,
-                                 int[][] sg1m, int[][] sg2m, int[][] dg1m, int[][] dg2m){
+                                 int[][] sg1m, int[][] sg2m, int[][] dg1m, int[][] dg2m)
+    {
+        Runtime runtime = Runtime.getRuntime();
 
-        //Write tests here
-        //in "sg1l" means sparse graph 1 list
-        //in "dg2m" means dense graph 2 matrix
+        System.out.println("*********SPARSE GRAPH BENCHMARKS****** \n");
+        System.out.println("Bench One: Sparse Graph 1 - Adj List");
+        long start = System.nanoTime();
+        int[] result1 = dijkstra(sg1l,0);
+        long duration = System.nanoTime() - start;
+        long usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result1)+ "\n");
+
+        System.out.println("Bench two: Sparse Graph 1 - Adj Matrix");
+        start = System.nanoTime();
+        int[] result2 = dijkstra(sg1m,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result2)+ "\n");
+
+        System.out.println("Bench Three: Sparse Graph 2 - Adj List");
+        start = System.nanoTime();
+        int[] result3 = dijkstra(sg2l,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result3)+ "\n");
+
+        System.out.println("Bench Four: Sparse Graph 2 - Adj Matrix");
+        start = System.nanoTime();
+        int[] result4 = dijkstra(sg2m,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result4)+ "\n");
+
+
+        System.out.println("*********DENSE GRAPH BENCHMARKS****** \n");
+        System.out.println("Bench Five: Dense Graph 1 - Adj List");
+        start = System.nanoTime();
+        int[] result5 = dijkstra(dg1l,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result5)+ "\n");
+
+        System.out.println("Bench Six: Dense Graph 1 - Adj Matrix");
+        start = System.nanoTime();
+        int[] result6 = dijkstra(dg1m,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result6)+ "\n");
+
+        System.out.println("Bench Seven: Dense Graph 2 - Adj List");
+        start = System.nanoTime();
+        int[] result7 = dijkstra(dg2l,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result7)+ "\n");
+
+        System.out.println("Bench Eight: Dense Graph 2 - Adj Matrix");
+        start = System.nanoTime();
+        int[] result8 = dijkstra(dg2m,0);
+        duration = System.nanoTime() - start;
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result8)+ "\n");
+
 
     }
     public static void main(String[] args) {
+
         buildGraphs();
     }
 
