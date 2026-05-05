@@ -1,5 +1,4 @@
-import java.lang.classfile.components.ClassPrinter;
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 public class Graphs {
@@ -45,7 +44,6 @@ public class Graphs {
         graph.get(u).add(new ABCNode(v, w));
         graph.get(v).add(new ABCNode(u, w)); //undirected graph
     }
-
     static Map<Character, ArrayList<ABCNode>> ABCSparseGraph() {
         Map<Character, ArrayList<ABCNode>> graph = new HashMap<>();
 
@@ -59,7 +57,6 @@ public class Graphs {
         return graph;
 
     }
-
     static Map<Character, ArrayList<ABCNode>> ABCDenseGraph() {
         Map<Character, ArrayList<ABCNode>> graph = new HashMap<>();
 
@@ -193,11 +190,11 @@ public class Graphs {
 //
 //    return graph;
 //}
-private static List<List<numNode>> matrixToList(int[][] m){
+private static ArrayList<ArrayList<numNode>> matrixToList(int[][] m){
     int inf = Integer.MAX_VALUE;
-    List<List<numNode>> returnList = new ArrayList<>();
+    ArrayList<ArrayList<numNode>> returnList = new ArrayList<>();
     for(int i = 0; i<m.length; i++){
-        List<numNode> innerList = new ArrayList<>();
+        ArrayList<numNode> innerList = new ArrayList<>();
         for(int j = 0; j<m.length; j++){
             if(m[i][j] != inf){
                 numNode e = new numNode(j,m[i][j]);
@@ -208,8 +205,8 @@ private static List<List<numNode>> matrixToList(int[][] m){
     }
     return returnList;
 }
-    int inf = Integer.MAX_VALUE;
-    int[][] sparseGraph1M = {
+    static int inf = Integer.MAX_VALUE;
+    static int[][] sparseGraph1M = {
             {0,4,2,inf,inf,inf},
             {4,0,inf,5,inf,inf},
             {2,inf,0,1,inf,inf},
@@ -217,7 +214,7 @@ private static List<List<numNode>> matrixToList(int[][] m){
             {inf,inf,inf,3,0,2},
             {inf,inf,inf,inf,2,0}
     };
-    int[][] sparseGraph2M = {
+    static int[][] sparseGraph2M = {
             {0,3,6,inf,inf,inf,inf},
             {3,0,inf,2,5,inf,inf},
             {6,inf,0,inf,4,inf,inf},
@@ -226,14 +223,14 @@ private static List<List<numNode>> matrixToList(int[][] m){
             {inf,inf,inf,7,inf,0,inf},
             {inf,inf,inf,inf,1,inf,0}
     };
-    int[][] denseGraph1M = {
+    static int[][] denseGraph1M = {
             {0,2,5,1,4},
             {2,0,3,2,6},
             {5,3,0,3,1},
             {1,2,3,0,2},
             {4,6,2,2,0}
     };
-    int[][] denseGraph2M = {
+    static int[][] denseGraph2M = {
             {0,3,2,6,5,4},
             {3,0,1,2,4,7},
             {2,1,0,3,6,5},
@@ -274,4 +271,53 @@ static int[] PriorityQueueDijkstra(int v, ArrayList<ArrayList<numNode>> graph, i
    }
    return dist;
 }
+
+    public static void main(String[] args) {
+    Runtime runtime =Runtime.getRuntime();
+        ArrayList<ArrayList<numNode>> sparseGraph1 = matrixToList(sparseGraph1M);
+        int v1 = 18;
+        ArrayList<ArrayList<numNode>> sparseGraph2 = matrixToList(sparseGraph2M);
+        int v2 = 21;
+
+        ArrayList<ArrayList<numNode>> denseGraph1 = matrixToList(denseGraph1M);
+        int v3 = 25;
+        ArrayList<ArrayList<numNode>> denseGraph2 = matrixToList(denseGraph2M);
+        int v4 = 36;
+
+        System.out.println("Benchmark One: Sparse Graph 1");
+        long start = System.nanoTime();
+        int[] result = PriorityQueueDijkstra(v1,sparseGraph1,0);
+        long usedMem = runtime.totalMemory() - runtime.freeMemory();
+        long duration = System.nanoTime() - start;
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Total Memory: " + usedMem+ " bytes");
+        System.out.println("Result : " + Arrays.toString(result) + "\n");
+
+        System.out.println("Benchmark Two: Sparse Graph 2");
+        start = System.nanoTime();
+        int[] result2 = PriorityQueueDijkstra(v2,sparseGraph2,0);
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        duration = System.nanoTime() - start;
+        System.out.println("Total Time: " + duration + " ns");
+        System.out.println("Total Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result2)+ "\n");
+
+        System.out.println("BenchMark 3: Dense Graph 1");
+        start = System.nanoTime();
+        int [] result3 = PriorityQueueDijkstra(v3, denseGraph1, 0);
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        duration = System.nanoTime() -start;
+        System.out.println("Total Time: " + duration+ " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result3) + "\n");
+
+        System.out.println("BenchMark 4: Dense Graph 2");
+        start = System.nanoTime();
+        int [] result4 = PriorityQueueDijkstra(v4, denseGraph2, 0);
+        usedMem = runtime.totalMemory() - runtime.freeMemory();
+        duration = System.nanoTime() -start;
+        System.out.println("Total Time: " + duration+ " ns");
+        System.out.println("Used Memory: " + usedMem+ " bytes");
+        System.out.println("Result: " + Arrays.toString(result4) + "\n");
+    }
 }
