@@ -302,7 +302,7 @@ public class DIjk1 {
         System.out.println("Average Used Memory: " + totalMem+ " bytes");
         System.out.println();
 
-        System.out.println("Bench Eleven : Testing random Dense graphs Matrix" );
+        System.out.println("Bench Eleven : Testing random Dense graphs List" );
         totalTime  = 0;
         totalMem = 0;
         for(int i = 0; i<5; i++){
@@ -319,8 +319,6 @@ public class DIjk1 {
         System.out.println("Average Used Memory: " + totalMem+ " bytes");
     }
     public static void main(String[] args) {
-        int[][] test = makeGraph(1000,10,0.2);
-        int x = 0;
         buildGraphs();
     }
 
