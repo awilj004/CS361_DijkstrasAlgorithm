@@ -1,3 +1,5 @@
+package src;
+
 import java.util.*;
 public class DIjk1 {
     //TODO make and test with large graphs like V-1000 sparse graph and V=200 dense graph.
@@ -5,6 +7,38 @@ public class DIjk1 {
     //for what you need todo and what ive already added, since ive labled everything by number accordin tod the proj specs
     //make sure to take ss and make a table of your implementations with lables and space and time complexities, i made it pretty clear in the runGraphs() or whatever
 
+    private static int[][] makeGraph(int V,int Seed,double density){
+        int[][] g = new int[V][V];
+        int inf = Integer.MAX_VALUE;
+        Random r = new Random(Seed);
+        for(int i = 0; i<V; i++){
+            for(int j = 0; j<V; j++){
+                g[i][j] = inf;
+            }
+            g[i][i] = 0;
+        }
+        for(int i = 0 ; i<V; i++){
+            List<Integer> bitV = new ArrayList<>();
+            for(int j = 0; j<V; j++){
+                if(j==i){
+                    continue;
+                }
+                bitV.add(j);
+            }
+            Collections.shuffle(bitV);
+            int numIter = (int)(V*density);
+            if(numIter<1){
+                numIter = 1;
+            }
+            for(int j = 0; j<numIter;j++){
+                int weight = r.nextInt(0,11);
+                int indc = bitV.getFirst();
+                bitV.removeFirst();
+                g[i][indc] = weight;
+            }
+        }
+        return g;
+    }
     private static void buildGraphs(){
         int inf = Integer.MAX_VALUE;
         int[][] sparseGraph1M = {
@@ -217,10 +251,76 @@ public class DIjk1 {
         System.out.println("Used Memory: " + usedMem+ " bytes");
         System.out.println("Result: " + Arrays.toString(result8)+ "\n");
 
+        System.out.println("Bench Nine : Testing random sparse graphs Matrix" );
+        long totalTime  = 0;
+        long totalMem = 0;
+        for(int i = 0; i<5; i++){
+            start = System.nanoTime();
+            int[] result = dijkstra(makeGraph(1000,i,0.2),0);
+            duration = System.nanoTime() - start;
+            usedMem = runtime.totalMemory() - runtime.freeMemory();
+            totalTime+=duration;
+            totalMem += usedMem;
+        }
+        totalTime/=5;
+        totalMem/=5;
+        System.out.println("Total Average Time: " + totalTime + " ns");
+        System.out.println("Average Used Memory: " + totalMem+ " bytes");
+        System.out.println();
 
+        System.out.println("Bench ten : Testing random sparse graphs List" );
+        totalTime  = 0;
+        totalMem = 0;
+        for(int i = 0; i<5; i++){
+            start = System.nanoTime();
+            int[] result = dijkstra(matrixToList(makeGraph(1000,i,0.2)),0);
+            duration = System.nanoTime() - start;
+            usedMem = runtime.totalMemory() - runtime.freeMemory();
+            totalTime+=duration;
+            totalMem += usedMem;
+        }
+        totalTime/=5;
+        totalMem/=5;
+        System.out.println("Total Average Time: " + totalTime + " ns");
+        System.out.println("Average Used Memory: " + totalMem+ " bytes");
+        System.out.println();
+
+        System.out.println("Bench Eleven : Testing random Dense graphs Matrix" );
+        totalTime  = 0;
+        totalMem = 0;
+        for(int i = 0; i<5; i++){
+            start = System.nanoTime();
+            int[] result = dijkstra(makeGraph(1000,i,0.9),0);
+            duration = System.nanoTime() - start;
+            usedMem = runtime.totalMemory() - runtime.freeMemory();
+            totalTime+=duration;
+            totalMem += usedMem;
+        }
+        totalTime/=5;
+        totalMem/=5;
+        System.out.println("Total Average Time: " + totalTime + " ns");
+        System.out.println("Average Used Memory: " + totalMem+ " bytes");
+        System.out.println();
+
+        System.out.println("Bench Eleven : Testing random Dense graphs Matrix" );
+        totalTime  = 0;
+        totalMem = 0;
+        for(int i = 0; i<5; i++){
+            start = System.nanoTime();
+            int[] result = dijkstra(matrixToList(makeGraph(1000,i,0.9)),0);
+            duration = System.nanoTime() - start;
+            usedMem = runtime.totalMemory() - runtime.freeMemory();
+            totalTime+=duration;
+            totalMem += usedMem;
+        }
+        totalTime/=5;
+        totalMem/=5;
+        System.out.println("Total Average Time: " + totalTime + " ns");
+        System.out.println("Average Used Memory: " + totalMem+ " bytes");
     }
     public static void main(String[] args) {
-
+        int[][] test = makeGraph(1000,10,0.2);
+        int x = 0;
         buildGraphs();
     }
 
